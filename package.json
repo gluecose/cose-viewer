@@ -1,0 +1,15 @@
+{
+  "name": "cose-viewer",
+  "private": true,
+  "dependencies": {
+    "cbor-redux": "^1.0.0-3",
+    "js-base64": "^3.7.2"
+  },
+  "devDependencies": {
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}
