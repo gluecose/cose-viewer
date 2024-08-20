@@ -110,8 +110,7 @@ function prettyBstrBase64(val) {
 }
 
 function prettyCounterSignature(val) {
-    // TODO details
-    return "<counter signature>";
+    return prettyUnknown(val);
 }
 
 function prettyCoseX509(val) {
@@ -133,12 +132,22 @@ function prettyString(val) {
 
 function prettyUnknown(val) {
     let prettyValue
-    if (ArrayBuffer.isView(val)) {
+    if (Array.isArray(val)) {
+        prettyValue = "[" + val.map(prettyUnknown).join(", ") + "]";
+    } else if (ArrayBuffer.isView(val)) {
         prettyValue = prettyBstrHex(val);
-    } else if (typeof val == "string") {
+    } else if (val instanceof Object.getPrototypeOf(Uint8Array)) {
+        prettyValue = prettyBstrBase64(val);
+    } else if (typeof val === "string") {
         prettyValue = `"${val}"`;
-    } else if (typeof val == "number") {
+    } else if (typeof val === "number") {
         prettyValue = val.toString();
+    } else if (val instanceof Map) {
+        prettyValue = "[";
+        for (const [key, value] of val) {
+            prettyValue += `  (${prettyUnknown(key)}): ${prettyUnknown(value)},`;
+        }
+        prettyValue += "]";
     } else if (val.tag) {
         prettyValue = `Tag(${val.tag}) ${prettyUnknown(val.value)}`;
     } else {
@@ -157,6 +166,7 @@ const HeaderMapping = new Map([
     [7, ["counter signature", prettyCounterSignature ]],
     [9, ["CounterSignature0", prettyBstrHex ]],
     [10, ["kid context", prettyBstrHex ]],
+    [15, ["CWT claims", prettyUnknown ]],
     [32, ["x5bag", prettyCoseX509 ]],
     [33, ["x5chain", prettyCoseX509 ]],
     [34, ["x5t", prettyCoseCertHash ]],

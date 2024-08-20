@@ -21,14 +21,30 @@
         #output {
             width: 100%;
         }
+        .header {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .footer {
+            width: 80%;
+            margin: 50px auto;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>COSE Viewer</h1>
+    </div>
     <div id="container">
         Note: This tool supports COSE_Sign1 only.<br /><br />
         <input type="file" id="file" /> <button id="load-file">Load File</button>
         <button id="load-hex">Load from Hex</button><br />
         <pre id="output"></pre>
+    </div>
+    <div class="footer">
+        <p>Source code @ <a href="https://github.com/gluecose/cose-viewer">GitHub</a></p>
     </div>
 
     <script src="main.js"></script>
